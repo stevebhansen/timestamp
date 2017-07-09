@@ -17,19 +17,18 @@ app.get("/", function (request, response) {
 });
 
 app.all("/*", function (request, response) {
-  var date = new Date(request.params[0]);
-  if(typeof date != 'undefined' && date){
-    response.send(new Date(request.params[0]));
+  if(!isDate(request.params[0])){
+    response.send("invalid date");
   }
   if(request.params[0].includes(" ")){
     var unixTime = new Date(request.params[0]).getTime() / 1000;
     response.send({unix: String(unixTime), natural: request.params[0]});
   }
   else{
-    var date = new Date(request.params[0] * 1000),
+    var natural = new Date(request.params[0] * 1000),
     locale = "en-us",
-    month = date.toLocaleString(locale, { month: "long" });
-    response.send({unix: request.params[0], natural: month + " " + date.getDate() + ", " + date.getFullYear()});
+    month = natural.toLocaleString(locale, { month: "long" });
+    response.send({unix: request.params[0], natural: month + " " + natural.getDate() + ", " + natural.getFullYear()});
   }
 });
 
@@ -37,3 +36,7 @@ app.all("/*", function (request, response) {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+var isDate = function(date) {
+    return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date)) )  ? true : false;
+}
