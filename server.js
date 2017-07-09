@@ -21,14 +21,21 @@ app.get("/dreams", function (request, response) {
 });
 
 app.all("/*", function (request, response) {
-  response.send('id: ' + JSON.striginfy(request.query));
+  if(request.params[0].includes(" ")){
+    var unixTime = new Date(request.params[0]).getTime() / 1000;
+    response.send({unix:String(unixTime));
+  }
+  else{
+    
+    response.send("unix date");
+  }
 });
-/*
+
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
 app.post("/dreams", function (request, response) {
   dreams.push(request.query.dream);
   response.sendStatus(200);
-});*/
+});
 
 // Simple in-memory store for now
 var dreams = [
