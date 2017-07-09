@@ -23,11 +23,13 @@ app.get("/dreams", function (request, response) {
 app.all("/*", function (request, response) {
   if(request.params[0].includes(" ")){
     var unixTime = new Date(request.params[0]).getTime() / 1000;
-    response.send({unix:String(unixTime));
+    response.send({unix: String(unixTime), natural: request.params[0]});
   }
   else{
-    
-    response.send("unix date");
+    var date = new Date(request.params[0] * 1000);
+    locale = "en-us",
+    month = date.toLocaleString(locale, { month: "long" });
+    response.send({unix: request.params[0], natural: date.toDateString()});
   }
 });
 
