@@ -17,8 +17,8 @@ app.get("/", function (request, response) {
 });
 
 app.all("/*", function (request, response) {
-  if(!isDate(request.params[0])){
-    response.send("invalid date");
+  if(!isDate(request.params[0] * 1000) && !isDate(request.params[0])){
+    response.send({unix: null, natural: null});
   }
   if(request.params[0].includes(" ")){
     var unixTime = new Date(request.params[0]).getTime() / 1000;
