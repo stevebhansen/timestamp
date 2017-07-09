@@ -17,6 +17,10 @@ app.get("/", function (request, response) {
 });
 
 app.all("/*", function (request, response) {
+  var date = new Date(request.params[0]);
+  if(typeof date != 'undefined' && date){
+    response.send(new Date(request.params[0]));
+  }
   if(request.params[0].includes(" ")){
     var unixTime = new Date(request.params[0]).getTime() / 1000;
     response.send({unix: String(unixTime), natural: request.params[0]});
