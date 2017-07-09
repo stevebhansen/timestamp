@@ -20,16 +20,16 @@ app.get("/dreams", function (request, response) {
   response.send(dreams);
 });
 
-app.all("/*", function (request, response) {
+app.get("/*", function (request, response) {
   if(request.params[0].includes(" ")){
     var unixTime = new Date(request.params[0]).getTime() / 1000;
     response.send({unix: String(unixTime), natural: request.params[0]});
   }
   else{
-    var date = new Date(request.params[0] * 1000);
+    var date = new Date(request.params[0] * 1000),
     locale = "en-us",
     month = date.toLocaleString(locale, { month: "long" });
-    response.send({unix: request.params[0], natural: date.toDateString()});
+    response.send({unix: request.params[0], natural: month + " " + date.getDate() + ", " + date.getFullYear()});
   }
 });
 
